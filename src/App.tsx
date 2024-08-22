@@ -1,38 +1,27 @@
-import { Reducer, useReducer } from "react";
-
-interface Data {
-    result: number;
-}
-
-interface Action {
-    type: 'add' | 'minus',
-    num: number
-}
-
-function reducer(state: Data, action: Action) {
-
-    switch(action.type) {
-        case 'add':
-            return {
-                result: state.result + action.num
-            }
-        case 'minus':
-            return {
-                result: state.result - action.num
-            }
-    }
-
-    return state;
-}
+import { produce } from "immer";
+import { useState } from "react";
 
 function App() {
-    const [res, dispatch] = useReducer<Reducer<Data, Action>>(reducer, {result: 0});
+    const [obj, setObj] = useState({
+        a: {
+            c: {
+                e: 0,
+                f: 0
+            },
+            d: 0
+        },
+        b: 0
+    });
 
     return (
         <div>
-            <div onClick={() => dispatch({ type: 'add', num: 2 })}>加</div>
-            <div onClick={() => dispatch({ type: 'minus', num: 1 })}>减</div>
-            <div>{res.result}</div>
+            <div onClick={() => {
+                setObj(produce(obj, (obj) => {
+                    obj.a.c.e ++;
+                    console.log(obj.a.c.e)
+                }));
+            }}>加</div>
+            <div>{obj.a.c.e}</div>
         </div>
     );
 }
