@@ -1,38 +1,26 @@
-import { Reducer, useReducer } from 'react';
-
-interface Data {
-    result: number;
-}
-
-interface Action {
-    type: 'add' | 'minus',
-    num: number
-}
-
-function reducer(state: Data, action: Action) {
-    switch(action.type) {
-        case 'add':
-            return {
-                result: state.result
-            }
-        case 'minus':
-            return {
-                result: state.result
-            }
-    }
-    return state
-}
+import { ChangeEvent, useEffect, useRef } from 'react';
 
 const App = () => {
-    const [res, dispatch] = useReducer<Reducer<Data, Action>, string>(reducer, 'zero', (param) => {
-        return {
-            result: 1
-        }
-    })
 
-    return <div>
-        hello world
-    </div>;
+    // 1.受控模式 value 由用户控制就是非受控模式，由代码控制就是受控模式
+    // function onChange(event: ChangeEvent<HTMLInputElement>) {
+    //     console.log(event.target.value)
+    // }
+
+    // return <div>
+    //     <input defaultValue={'sun'} onChange={onChange}></input>
+    // </div>;
+
+    // 2.ref
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        setTimeout(() => {
+            console.log(inputRef.current?.value)
+        }, 2000);
+    }, [])
+
+    return <input defaultValue={'Sun'} ref={inputRef}/>
 }
 
 export default App;
