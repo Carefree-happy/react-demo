@@ -1,22 +1,18 @@
-import { createContext, useContext } from 'react';
-
-const countContext = createContext(111);
+import { useEffect, useState } from 'react';
 
 function App() {
-    return <div>
-        <countContext.Provider value={222}>
-            <Bbb></Bbb>
-        </countContext.Provider>
-    </div>
-} 
 
-function Bbb() {
-    return <div><Ccc></Ccc></div>
-}
+    const [count,setCount] = useState(0);
 
-function Ccc() {
-    const count = useContext(countContext);
-    return <h2>context 的值为：{count}</h2>
+    useEffect(() => {
+        setInterval(() => {
+            console.log(count);
+            // 解除闭包，每次的 count 都是参数传入的上一次的 state
+            setCount(count => count + 1)
+        }, 1000);
+    }, []);
+
+    return <div>{count}</div>
 }
 
 export default App;
