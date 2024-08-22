@@ -1,33 +1,22 @@
-import { Reducer, useEffect, useReducer } from "react";
-
-interface Action {
-    type: 'add' | 'minus',
-    num: number
-}
-
-function reducer(state: number, action: Action) {
-
-    switch(action.type) {
-        case 'add':
-            return state + action.num
-        case 'minus': 
-            return state - action.num
-    }
-    return state;
-}
+import { useEffect, useState } from 'react';
 
 function App() {
-    const [count, dispatch] = useReducer<Reducer<number, Action>>(reducer, 0);
+
+    const [count,setCount] = useState(0);
 
     useEffect(() => {
         console.log(count);
 
-        setInterval(() => {
-            dispatch({ type: 'add', num: 1 })
+        const timer = setInterval(() => {
+            setCount(count + 1);
         }, 1000);
-    }, []);
 
-    return <div>{count}</div>;
+        return () => {
+            clearInterval(timer);
+        }
+    }, [count]);
+
+    return <div>{count}</div>
 }
 
 export default App;
