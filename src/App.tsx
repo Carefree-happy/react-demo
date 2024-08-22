@@ -1,32 +1,41 @@
-import { useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 interface SunProps {
-    name: string,
-    content: React.ReactElement
+    name: string
 }
 
-const Sun: React.FunctionComponent<SunProps> = (props) => {
-    const ref = useRef<HTMLDivElement>(null)
-    const objRef = useRef<{ num: number }>();
-    // 1. Ref 的使用
-    // ref 中如果传 null，则current不能改
-    objRef.current = { num: 24 };
-    // 基础类型current不能为null
-    const numRef = useRef<boolean>();
-    numRef.current = false
-
-    return <div ref={ref}>aa, {props.name}{props.content}</div>
+interface SunRef {
+    sunFocus: () => void
 }
 
-// ReactNode > ReactElement > JSX.Element
+const Sun: React.ForwardRefRenderFunction<SunRef, SunProps> = (props, ref) => {
+    const inputRef = useRef<HTMLInputElement>(null)
 
-const content: React.ReactNode = 23
-
-const App = () => {
-    const [name, setName] = useState<string>('SUN')
+    useImperativeHandle(ref, () => {
+        return {
+            sunFocus() {
+                inputRef.current?.focus()
+            }
+        }
+    }, [inputRef])
 
     return <div>
-        <Sun name={name} content={<button>XXX</button>}></Sun>
+        <input ref={inputRef} />
+        <div>{props.name}</div>
+    </div>
+}
+
+const WrappedSun = React.forwardRef(Sun)
+
+const App = () => {
+    const ref = useRef<SunRef>(null)
+
+    useEffect(() => {
+        ref.current?.sunFocus();
+    }, [])
+
+    return <div>
+        <WrappedSun name='Sun' ref={ref}></WrappedSun>
     </div>;
 }
 
