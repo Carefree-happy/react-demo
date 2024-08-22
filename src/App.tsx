@@ -1,27 +1,24 @@
-import { produce } from "immer";
-import { useState } from "react";
+import React, { useEffect, useRef } from "react";
+
+const SUN: React.ForwardRefRenderFunction<HTMLInputElement> = (props, ref) => {
+    return <div>
+        <input ref={ref}></input>
+    </div>
+}
+
+const WrappedSun = React.forwardRef(SUN)
 
 function App() {
-    const [obj, setObj] = useState({
-        a: {
-            c: {
-                e: 0,
-                f: 0
-            },
-            d: 0
-        },
-        b: 0
-    });
+    const ref = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        console.log('ref', ref.current)
+        ref.current?.focus()
+    })
 
     return (
         <div>
-            <div onClick={() => {
-                setObj(produce(obj, (obj) => {
-                    obj.a.c.e ++;
-                    console.log(obj.a.c.e)
-                }));
-            }}>加</div>
-            <div>{obj.a.c.e}</div>
+            <WrappedSun ref={ref}></WrappedSun>
         </div>
     );
 }
