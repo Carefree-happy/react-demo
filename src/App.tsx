@@ -1,40 +1,22 @@
-import React, { useEffect, useImperativeHandle, useRef } from "react";
+import { createContext, useContext } from 'react';
 
-interface RefProps {
-    focusSun: () => void
-}
-
-const SUN: React.ForwardRefRenderFunction<RefProps> = (props, ref) => {
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    useImperativeHandle(ref, () => {
-        return {
-            focusSun() {
-                inputRef.current?.focus();
-            }
-        }
-    }, [inputRef])
-
-    return <div>
-        <input ref={inputRef}></input>
-    </div>
-}
-
-const WrappedSun = React.forwardRef(SUN)
+const countContext = createContext(111);
 
 function App() {
-    const ref = useRef<RefProps>(null);
+    return <div>
+        <countContext.Provider value={222}>
+            <Bbb></Bbb>
+        </countContext.Provider>
+    </div>
+} 
 
-    useEffect(() => {
-        console.log('ref', ref.current)
-        ref.current?.focusSun();
-    })
+function Bbb() {
+    return <div><Ccc></Ccc></div>
+}
 
-    return (
-        <div>
-            <WrappedSun ref={ref}></WrappedSun>
-        </div>
-    );
+function Ccc() {
+    const count = useContext(countContext);
+    return <h2>context 的值为：{count}</h2>
 }
 
 export default App;
