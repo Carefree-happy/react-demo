@@ -1,18 +1,33 @@
-import { useEffect, useState } from 'react';
+import { Reducer, useEffect, useReducer } from "react";
+
+interface Action {
+    type: 'add' | 'minus',
+    num: number
+}
+
+function reducer(state: number, action: Action) {
+
+    switch(action.type) {
+        case 'add':
+            return state + action.num
+        case 'minus': 
+            return state - action.num
+    }
+    return state;
+}
 
 function App() {
-
-    const [count,setCount] = useState(0);
+    const [count, dispatch] = useReducer<Reducer<number, Action>>(reducer, 0);
 
     useEffect(() => {
+        console.log(count);
+
         setInterval(() => {
-            console.log(count);
-            // 解除闭包，每次的 count 都是参数传入的上一次的 state
-            setCount(count => count + 1)
+            dispatch({ type: 'add', num: 1 })
         }, 1000);
     }, []);
 
-    return <div>{count}</div>
+    return <div>{count}</div>;
 }
 
 export default App;
