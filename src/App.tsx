@@ -1,25 +1,39 @@
-import { useEffect, useState } from "react";
+import { Reducer, useReducer } from "react";
 
-async function queryData() {
-    const data = await new Promise<number>((resolve) => {
-        setTimeout(() => {
-            resolve(666);
-        }, 2000);
-    })
-    return data;
+interface Data {
+    result: number;
+}
+
+interface Action {
+    type: 'add' | 'minus',
+    num: number
+}
+
+function reducer(state: Data, action: Action) {
+
+    switch(action.type) {
+        case 'add':
+            return {
+                result: state.result + action.num
+            }
+        case 'minus':
+            return {
+                result: state.result - action.num
+            }
+    }
+
+    return state;
 }
 
 function App() {
-    const [num, setNum] = useState(0);
-
-    useEffect(() => {
-        queryData().then(data => {
-            setNum(data);
-        })
-    }, []);
+    const [res, dispatch] = useReducer<Reducer<Data, Action>>(reducer, {result: 0});
 
     return (
-        <div onClick={() => setNum((prevNum) => prevNum + 1)}>{num}</div>
+        <div>
+            <div onClick={() => dispatch({ type: 'add', num: 2 })}>加</div>
+            <div onClick={() => dispatch({ type: 'minus', num: 1 })}>减</div>
+            <div>{res.result}</div>
+        </div>
     );
 }
 
