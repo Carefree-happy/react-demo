@@ -1,41 +1,37 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Reducer, useReducer } from 'react';
 
-interface SunProps {
-    name: string
+interface Data {
+    result: number;
 }
 
-interface SunRef {
-    sunFocus: () => void
+interface Action {
+    type: 'add' | 'minus',
+    num: number
 }
 
-const Sun: React.ForwardRefRenderFunction<SunRef, SunProps> = (props, ref) => {
-    const inputRef = useRef<HTMLInputElement>(null)
-
-    useImperativeHandle(ref, () => {
-        return {
-            sunFocus() {
-                inputRef.current?.focus()
+function reducer(state: Data, action: Action) {
+    switch(action.type) {
+        case 'add':
+            return {
+                result: state.result
             }
-        }
-    }, [inputRef])
-
-    return <div>
-        <input ref={inputRef} />
-        <div>{props.name}</div>
-    </div>
+        case 'minus':
+            return {
+                result: state.result
+            }
+    }
+    return state
 }
-
-const WrappedSun = React.forwardRef(Sun)
 
 const App = () => {
-    const ref = useRef<SunRef>(null)
-
-    useEffect(() => {
-        ref.current?.sunFocus();
-    }, [])
+    const [res, dispatch] = useReducer<Reducer<Data, Action>, string>(reducer, 'zero', (param) => {
+        return {
+            result: 1
+        }
+    })
 
     return <div>
-        <WrappedSun name='Sun' ref={ref}></WrappedSun>
+        hello world
     </div>;
 }
 
