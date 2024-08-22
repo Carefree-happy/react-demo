@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface SunProps {
     name: string,
@@ -6,7 +6,16 @@ interface SunProps {
 }
 
 const Sun: React.FunctionComponent<SunProps> = (props) => {
-    return <div>aa, {props.name}{props.content}</div>
+    const ref = useRef<HTMLDivElement>(null)
+    const objRef = useRef<{ num: number }>();
+    // 1. Ref 的使用
+    // ref 中如果传 null，则current不能改
+    objRef.current = { num: 24 };
+    // 基础类型current不能为null
+    const numRef = useRef<boolean>();
+    numRef.current = false
+
+    return <div ref={ref}>aa, {props.name}{props.content}</div>
 }
 
 // ReactNode > ReactElement > JSX.Element
@@ -14,8 +23,10 @@ const Sun: React.FunctionComponent<SunProps> = (props) => {
 const content: React.ReactNode = 23
 
 const App = () => {
+    const [name, setName] = useState<string>('SUN')
+
     return <div>
-        <Sun name='SUN' content={<button>XXX</button>}></Sun>
+        <Sun name={name} content={<button>XXX</button>}></Sun>
     </div>;
 }
 
