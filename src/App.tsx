@@ -1,19 +1,33 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useImperativeHandle, useRef } from "react";
 
-const SUN: React.ForwardRefRenderFunction<HTMLInputElement> = (props, ref) => {
+interface RefProps {
+    focusSun: () => void
+}
+
+const SUN: React.ForwardRefRenderFunction<RefProps> = (props, ref) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => {
+        return {
+            focusSun() {
+                inputRef.current?.focus();
+            }
+        }
+    }, [inputRef])
+
     return <div>
-        <input ref={ref}></input>
+        <input ref={inputRef}></input>
     </div>
 }
 
 const WrappedSun = React.forwardRef(SUN)
 
 function App() {
-    const ref = useRef<HTMLInputElement>(null);
+    const ref = useRef<RefProps>(null);
 
     useEffect(() => {
         console.log('ref', ref.current)
-        ref.current?.focus()
+        ref.current?.focusSun();
     })
 
     return (
