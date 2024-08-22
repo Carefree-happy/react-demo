@@ -1,41 +1,22 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState } from 'react';
 
-function useInterval(fn: Function, time: number) {
-    const ref = useRef(fn);
-
-    ref.current = fn;
-
-    let cleanUpFnRef = useRef<Function>();
-    
-    const clean = useCallback(() =>{
-        cleanUpFnRef.current?.();
-    }, []);
-
-    useEffect(() => {
-        // 定时器的场景需要保证定时器只跑一次，不然重新跑会导致定时不准，所以需要用 useEffect + useRef 的方式来解决闭包陷阱问题
-        const timer = setInterval(() => ref.current(), time);
-
-        cleanUpFnRef.current = ()=> {
-            clearInterval(timer);
-        }
-
-        return clean;
-    }, []);
-
-    return clean;
+interface SunProps {
+    name: string,
+    content: React.ReactElement
 }
 
+const Sun: React.FunctionComponent<SunProps> = (props) => {
+    return <div>aa, {props.name}{props.content}</div>
+}
 
-function App() {
-    const [count, setCount] = useState(0);
+// ReactNode > ReactElement > JSX.Element
 
-    const updateCount = () => {
-        setCount(count + 1);
-    };
+const content: React.ReactNode = 23
 
-    useInterval(updateCount, 1000);
-
-    return <div>{count}</div>;
+const App = () => {
+    return <div>
+        <Sun name='SUN' content={<button>XXX</button>}></Sun>
+    </div>;
 }
 
 export default App;
