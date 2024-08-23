@@ -1,5 +1,9 @@
-import { act, renderHook } from "@testing-library/react"
+import { renderHook } from "@testing-library/react"
 import useCounter from "./useCounter"
+import { act } from "react";
+// act 的位置存在疑问
+// @testing-library/react、react-dom/test-utils 被废弃
+// react 中的刚刚好
 
 test('useCounter', async () => {
     const { result, unmount }  = renderHook(() => useCounter(0));
