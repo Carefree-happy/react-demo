@@ -1,48 +1,14 @@
-import React, { Component, ReactNode } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import Toggle from './components/Toggle/Toggle';
 import useCounter from './hooks/Counter/useCounter';
-
-
-interface ErrorBoundaryState {
-    hasError: boolean;
-    message?: string;
-  }
+import { ErrorBoundary } from "react-error-boundary";
   
-  interface ErrorBoundaryProps {
-    children: ReactNode;
-  }
-  
-  class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    constructor(props: ErrorBoundaryProps) {
-      super(props);
-      this.state = {
-        hasError: false
-      };
-    }
-  
-    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-      return { hasError: true, message: error.message };
-    }
-  
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-      console.log(error, errorInfo);
-    }
-  
-    render() {
-      if (this.state.hasError) {
-        return <div>出错了： {this.state.message}</div>;
-      }
-      return this.props.children;
-    }
-  }
-  
-  function Bbb() {
-    // 这里需要进行非空断言，确保 window.a.b 存在
-    const b = (window as any).a.b;
-    return <div>{b}</div>;
-  }
+function Bbb() {
+  // 这里需要进行非空断言，确保 window.a.b 存在
+  const b = (window as any).a.b;
+  return <div>{b}</div>;
+}
 
 function App() {
   const [count, increment, decrement] = useCounter(100);
@@ -61,10 +27,17 @@ function App() {
         <button onClick={() => increment(1)}>+</button>
         <button onClick={() => decrement(1)}>1</button>
         <p>{count}</p>
+        <ErrorBoundary fallbackRender={({ error }) => {
+          console.log('error', error.message);
+          return <div>
+          <p>出错了：</p>
+          <div>{error.message}</div>
+        </div>
+        }}>
+          <Bbb></Bbb>
+        </ErrorBoundary>
       </header>
-      <ErrorBoundary>
-        <Bbb></Bbb>
-      </ErrorBoundary>
+      
     </div>
   );
 }
