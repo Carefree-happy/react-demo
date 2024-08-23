@@ -10,8 +10,16 @@ test('renders learn react link', () => {
 });
 
 // 拿到渲染容器的 dom，再用 dom api 来查找 dom
+// test('renders learn react link 2', () => {
+//   const { container } = render(<App/>);
+//   const linkElement = container.querySelector('.App-link');
+//   expect(linkElement?.textContent).toMatch(/learn react/i);
+// })
+
 test('renders learn react link 2', () => {
-  const { container } = render(<App/>);
-  const linkElement = container.querySelector('.App-link');
-  expect(linkElement?.textContent).toMatch(/learn react/i);
-})
+  render(<App />);
+  // 使用 getByText 查找带有 "learn react" 文本内容的链接元素
+  const linkElement = screen.getByText(/learn react/i);
+  // 断言该链接元素确实存在
+  expect(linkElement).toBeInTheDocument();
+});
