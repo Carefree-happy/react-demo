@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './App.css';
 import Toggle from './components/Toggle/Toggle';
 import useCounter from './hooks/Counter/useCounter';
-import { ErrorBoundary } from "react-error-boundary";
-  
-function Bbb() {
-  // 这里需要进行非空断言，确保 window.a.b 存在
-  const b = (window as any).a.b;
-  return <div>{b}</div>;
+
+let data: string, promise;
+
+function fetchData() {
+  if (data) return data;
+  promise = new Promise<void>(resolve => {
+    setTimeout(() => {
+      data = '取到的数据'
+      resolve()
+    }, 2000)
+  })
+  throw promise;
+}
+
+function Content() {
+  const data = fetchData();
+  return <p>{data}</p>
 }
 
 function App() {
@@ -27,15 +38,9 @@ function App() {
         <button onClick={() => increment(1)}>+</button>
         <button onClick={() => decrement(1)}>1</button>
         <p>{count}</p>
-        <ErrorBoundary fallbackRender={({ error }) => {
-          console.log('error', error.message);
-          return <div>
-          <p>出错了：</p>
-          <div>{error.message}</div>
-        </div>
-        }}>
-          <Bbb></Bbb>
-        </ErrorBoundary>
+        <Suspense fallback={'loading data'}>
+          <Content />
+        </Suspense>
       </header>
       
     </div>
