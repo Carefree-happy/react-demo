@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './App.css';
-import Space from './components/Space';
-import { ConfigProvider } from './components/Space/ConfigProvider';
+interface AaaProps {
+  children: React.ReactNode[]
+}
+
+const Aaa: FC<AaaProps> = (props) => {
+  const { children } = props;
+
+  return <div className='container'>
+    {
+      children.map((item, index) => {
+        return <div className='item'>{item}</div>
+      })
+    }
+  </div>
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className='App-header'>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <ConfigProvider space={{ size: 20 }}>
-          <Space direction="horizontal">
-            <div className="box">1</div>
-            <div className="box">2</div>
-            <div className="box">3</div>
-          </Space>
-          <Space direction="vertical">
-            <div className="box">4</div>
-            <div className="box">5</div>
-            <div className="box">6</div>
-          </Space>
-        </ConfigProvider>
-      </header>
-      
-    </div>
+    <Aaa>
+        {
+          [
+            <span>111</span>,
+            <span>333</span>,
+            [<span>444</span>, <span>222</span>]
+          ]
+        }
+      </Aaa>
   );
 }
 
