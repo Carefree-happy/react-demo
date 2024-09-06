@@ -1,17 +1,9 @@
-import { MouseEventHandler, useEffect, useRef, useState } from 'react'
-import useMountedState from './hooks/U/useMountedState'
+import useLifecyles from './hooks/U/useLifecycles';
 
 function App() {
-    const isMounted = useMountedState();
-    const [,setNum] = useState(0);
+    useLifecyles(() => console.log('MOUNTED'), () => console.log('UNMOUNTED'));
 
-    useEffect(() => {
-        setTimeout(() => {
-            setNum(1)
-        }, 6000)
-    }, [])
-
-    return <div>{isMounted() ? 'mounted' : 'pending'}</div>
+    return <div>mounted</div>
 }
 
 export default App
