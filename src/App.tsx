@@ -1,38 +1,18 @@
-import { useState } from "react"
-import useWhyDidYouUpdate from "./hooks/U/useWhyDidYouUpdate";
-
-const Demo: React.FC<{ count: number }> = (props) => {
-    const [randomNum, setRandomNum] = useState(Math.random());
-  
-    useWhyDidYouUpdate('Demo', { ...props, randomNum });
-  
-    return (
-        <div>
-            <div>
-                <span>number: {props.count}</span>
-            </div>
-            <div>
-                randomNum: {randomNum}
-                <button onClick={() => setRandomNum(Math.random)}>
-                    设置随机 state
-                </button>
-            </div>
-        </div>
-    );
-  };
+import { useCountDown } from 'ahooks';
 
 function App() {
-    const [count, setCount] = useState(0);
+    const [countdown, formattedRes] = useCountDown({
+        targetDate: `${new Date().getFullYear()}-12-31 23:59:59`,
+    });
+
+    const { days, hours, minutes, seconds, milliseconds } = formattedRes;
 
     return (
-        <div>
-            <Demo count={count} />
-            <div>
-                <button onClick={() => setCount((prevCount) => prevCount - 1)}>减一</button>
-                <button onClick={() => setCount((prevCount) => prevCount + 1)}>加一</button>
-            </div>
-        </div>
+        <p>
+            <p>{ countdown }</p>
+            距离今年年底还剩 {days} 天 {hours} 小时 {minutes} 分钟 {seconds} 秒 {milliseconds} 毫秒
+        </p>
     );
-}
+};
 
 export default App
