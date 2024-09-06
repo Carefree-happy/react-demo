@@ -1,16 +1,40 @@
-import useHover from "./hooks/U/useHover"
+import { useRef } from "react";
+import useScrolling from "./hooks/U/useScrolling";
 
 
 function App() {
-    const element = (hovered: boolean) => <div>Hover me! {hovered && 'Thanks!'}</div>
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const scrolling = useScrolling(scrollRef);
 
-    const [hoverable, hovered] = useHover(element);
-    
     return (
-        <div>
-            {hoverable}
-            <div>{hovered ? 'HOVERED' : ''}</div>
+        <>
+        {<div>{scrolling ? "滚动中.." : "没有滚动"}</div>}
+
+        <div ref={scrollRef} style={{height: '200px', overflow: 'auto'}}>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
+            <div>guang</div>
         </div>
+        </>
     )
 }
 
