@@ -1,17 +1,15 @@
-import { useRef } from "react";
-import useSize from "./hooks/U/useSize";
-
+import { useState } from "react"
+import useTimeout from "./hooks/U/useTimeout";
 
 function App() {
-    const ref = useRef<HTMLDivElement>(null);
-    const size = useSize(ref);
+    const [state, setState] = useState(0);
 
+    useTimeout(() => {
+        setState(state + 1)
+    }, 1000);
     return (
-        <div ref={ref}>
-            <p>改变窗口大小试试</p>
-            <p style={{background: 'pink'}}>
-                width: {size?.width}px, height: {size?.height}px,
-            </p>
+        <div>
+            <p>{ state }</p>
         </div>
     )
 }
