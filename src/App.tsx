@@ -1,40 +1,18 @@
 import { useRef } from "react";
-import useScrolling from "./hooks/U/useScrolling";
+import useSize from "./hooks/U/useSize";
 
 
 function App() {
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const scrolling = useScrolling(scrollRef);
+    const ref = useRef<HTMLDivElement>(null);
+    const size = useSize(ref);
 
     return (
-        <>
-        {<div>{scrolling ? "滚动中.." : "没有滚动"}</div>}
-
-        <div ref={scrollRef} style={{height: '200px', overflow: 'auto'}}>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
-            <div>guang</div>
+        <div ref={ref}>
+            <p>改变窗口大小试试</p>
+            <p style={{background: 'pink'}}>
+                width: {size?.width}px, height: {size?.height}px,
+            </p>
         </div>
-        </>
     )
 }
 
