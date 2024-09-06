@@ -1,9 +1,17 @@
-import useLifecyles from './hooks/U/useLifecycles';
+import useHover from "./hooks/U/useHover"
+
 
 function App() {
-    useLifecyles(() => console.log('MOUNTED'), () => console.log('UNMOUNTED'));
+    const element = (hovered: boolean) => <div>Hover me! {hovered && 'Thanks!'}</div>
 
-    return <div>mounted</div>
+    const [hoverable, hovered] = useHover(element);
+    
+    return (
+        <div>
+            {hoverable}
+            <div>{hovered ? 'HOVERED' : ''}</div>
+        </div>
+    )
 }
 
 export default App
