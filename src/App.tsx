@@ -1,63 +1,17 @@
-import { MouseEventHandler, useEffect, useRef } from 'react'
+import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import useMountedState from './hooks/U/useMountedState'
 
 function App() {
-    const ref = useRef<HTMLDivElement>(null);
-
-    const clickHandler: MouseEventHandler<HTMLDivElement> = (e: any) => {
-        const top = document.getElementById('box')!.getBoundingClientRect().top;
-
-        console.log('box pageY', e.pageY);
-        console.log('box clientY', e.clientY)
-        console.log('box offsetY', e.pageY - top - window.scrollY);
-        console.log('box offsetY', e.clientY - top);
-        console.log('box screenY', e.screenY);
-
-        console.log('scrollTop', ref.current?.scrollTop);
-        console.log('offsetTop', ref.current?.offsetTop);
-        console.log('clientTop', ref.current?.clientTop);
-    };
+    const isMounted = useMountedState();
+    const [,setNum] = useState(0);
 
     useEffect(() => {
-        document.getElementById('box')!.addEventListener('click', (e) => {
-            console.log('box2 pageY', e.pageY);
-            console.log('box2 clientY', e.clientY)
-            console.log('box2 offsetY', e.offsetY);
-            console.log('box2 screenY', e.screenY);
-        });
-    }, []);
+        setTimeout(() => {
+            setNum(1)
+        }, 6000)
+    }, [])
 
-    return (
-        <div  style={{height: '2000px'}}>
-            <div 
-                id="box" 
-                ref={ref} 
-                onClick={clickHandler}
-                style={{
-                    width: '100px',
-                    height: '100px',
-                    background: 'blue',
-                    overflow: 'auto'
-                }}
-            >
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-                <p>xxxxx</p>
-            </div>
-        </div>
-    )
+    return <div>{isMounted() ? 'mounted' : 'pending'}</div>
 }
 
 export default App
